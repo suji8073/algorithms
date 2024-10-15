@@ -5,17 +5,19 @@ function solution(arr) {
     
     if (arr.length === 1) return [-1];
     
-    let min = Infinity;
-    let indexArr = 0;
+//     let min = Infinity;
+//     let indexArr = 0;
     
-    arr.forEach((value, index) => {
-        if (value < min) {
-            min = value;
-            indexArr = index;
-        } 
-    });
+//     arr.forEach((value, index) => {
+//         if (value < min) {
+//             min = value;
+//             indexArr = index;
+//         } 
+//     });
     
-    arr.splice(indexArr, 1);
+    const min = arr.findIndex((num)=> num === Math.min(...arr));
+    
+    arr.splice(min, 1);
     
     return arr;
 }
