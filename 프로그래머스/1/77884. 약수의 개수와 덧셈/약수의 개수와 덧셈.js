@@ -16,6 +16,7 @@ function solution(left, right) {
     var answer = 0;
     
     for (var i = left; i <= right ; i++){
+        // 제곱근이 정수이면 약수의 개수는 홀수이다.
         answer += (Number.isInteger(Math.sqrt(i)) ? -i : i)
     }
     
