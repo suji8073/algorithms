@@ -1,6 +1,9 @@
 function solution(s) {
-    if (s.length !== 4 && s.length !== 6) return false;
-    for (var i = 0; i < s.length;  i++){
+    const length = s.length;
+    
+    if (length !== 4 && length !== 6) return false;
+    
+    for (var i = 0; i < length ; i++){
         if (isNaN(s[i])){
             return false;
         }
