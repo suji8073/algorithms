@@ -20,16 +20,12 @@ function solution(s) {
             answer += String(num);
         } else {
             temp += num;
-            console.log(temp, number[temp])
             if (!isNaN(number[temp])){
                 answer += String(number[temp]);
                 temp = '';
             } 
         }
     })
-    
-
-
 
     return parseInt(answer);
 }
