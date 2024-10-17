@@ -1,12 +1,13 @@
 function solution(name, yearning, photos) {
-    var answer = [];
-    photos.map((photo) => {
-        var count = 0;
-        for (var i=0; i<photo.length; i++){
-            const index = name.indexOf(photo[i]);
-            count += (index === -1 ? 0 : yearning[index]);
-        }
-        answer.push(count)
+    const object = Object.fromEntries(name.map((key, index) => [key, yearning[index]]));
+   
+    return photos.map((photo) => {
+        var result = 0;
+        photo.forEach((p, i) => {
+            if (object[p]) {
+                result += object[p];
+            }
+        })
+        return result;
     })
-    return answer;
 }
