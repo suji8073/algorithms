@@ -1,35 +1,33 @@
 function solution(dartResult) {
-    const dartArray = [...dartResult];
-    const array = ['S', 'D', 'T'];
+    const bonusTypes = ['S', 'D', 'T'];
     
-    var answer = [];
+    let score = 0;
+    const result = [];
     
-    let result = 0;
-    let index = 0;
-    for (let i = 0; i < dartArray.length; i++) {
-        if (!isNaN(dartArray[i])) {
-            if (isNaN(dartArray[i-1])){
-                answer.push(result);
-                result = Number(dartArray[i]);
+    for (let i = 0; i < dartResult.length; i++) {
+        const currentChar = dartResult[i];
+        
+        if (!isNaN(currentChar)) {
+            if (!isNaN(dartResult[i-1])) {
+                score = score * 10 + Number(currentChar);
             } else {
-                result = Number(result + dartArray[i]);
+                result.push(score);
+                score = Number(currentChar);
             }
-          
-        } else if (array.includes(dartArray[i])){
-            const findIndex = array.findIndex(a => a === dartArray[i]);
-            result = result**(findIndex+1);
-        } else if (dartArray[i] === '*') {
-            answer[answer.length-1] *= 2;
-            result *= 2;
-        } else if (dartArray[i] === '#'){
-            result *= -1;
-        }
-        if (i === dartArray.length -1){
-             answer.push(result);
+        } else if (bonusTypes.includes(currentChar)) {
+            const bonuxIndex = bonusTypes.indexOf(currentChar);
+            score **= (bonuxIndex + 1);
+        } else if (currentChar === '*') {
+            result[result.length-1] *= 2;
+            score *= 2;
+        } else if (currentChar === '#'){
+            score *= -1;
         }
         
+        if (i === dartResult.length -1){
+             result.push(score);
+        }
     }
-    console.log(answer)
 
-    return answer.reduce((acc, cur) => acc + cur, 0);
+    return result.reduce((acc, cur) => acc + cur, 0);
 }
