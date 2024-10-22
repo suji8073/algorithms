@@ -10,6 +10,5 @@ function solution(n) {
         if (getCount(index) === count) break;
         index++;
     }
-    
     return index;
 }
