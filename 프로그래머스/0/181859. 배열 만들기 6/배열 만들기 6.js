@@ -1,18 +1,14 @@
 function solution(arr) {
     var stack = [];
     
-    for (var i = 0; i < arr.length; i++) {
-        if (stack === []) {
-            stack.push(arr[i]);
-            continue;
-        }
-        
-        if (stack[stack.length -1] === arr[i]) {
+    for (num of arr) {
+        const len = stack.length;
+        if (len !== 0 && stack[len -1] === num) {
             stack.pop();
             continue;
         }
         
-        stack.push(arr[i]);
+        stack.push(num);
     }
 
     return stack.length === 0 ? [-1] : stack;
