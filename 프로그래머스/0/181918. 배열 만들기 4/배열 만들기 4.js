@@ -9,11 +9,13 @@ function solution(arr) {
             continue;
         }
         
-        if (stk[len-1] < arr[i]) stk.push(arr[i]);
-        else {
-            stk.pop();
-            i--;
+        if (stk[len-1] < arr[i]) {
+            stk.push(arr[i]);
+            continue;
         }
+        
+        stk.pop();
+        i--;
     }
     
     return stk;
