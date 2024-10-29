@@ -1,16 +1,17 @@
 function solution(a, b, c, d) {
-    const array = [...new Set([a, b, c, d])];
-    const len = array.length;
+    const arr = [a, b, c, d];
+    const setArr = [...new Set(arr)];
+    const len = setArr.length;
     
     if (len === 1) return 1111 * a;
-    if (len === 4) return Math.min(...array);
-    if (len === 2 && [a, b, c, d].filter(c => c === a).length === 2) {
-        return (array[0] + array[1]) * (Math.abs(array[0] - array[1]));
+    if (len === 4) return Math.min(...setArr);
+    if (len === 2 && arr.filter(c => c === a).length === 2) {
+        return (setArr[0] + setArr[1]) * (Math.abs(setArr[0] - setArr[1]));
     }
 
     const hashMap = new Map();
     
-    [a, b, c, d].forEach(char => {
+    arr.forEach(char => {
         if (!hashMap.has(char)) {
             hashMap.set(char, 1);
         } else {
@@ -39,8 +40,5 @@ function solution(a, b, c, d) {
         if (value === 1) min = key;
     }
     
-    
     return (10 * max + min)**2;
- 
-    return answer;
 }
