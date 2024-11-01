@@ -5,13 +5,11 @@ function solution(array) {
         else answer[num] = 1;
     }
     
-    const maxNum = Math.max(...Object.values(answer));
+    answer = Object.entries(answer).sort((a, b) => b[1] - a[1]);
     
-    var result = [];
-    Object.entries(answer).map(([key, value]) => {
-       if (value === maxNum) result.push(key)
-     })
+    if (answer.length > 1 && answer[0][1] === answer[1][1]){
+        return -1;
+    }
     
-    
-    return result.length > 1 ? -1 : Number(result[0]);
+    return Number(answer[0][0]);
 }
