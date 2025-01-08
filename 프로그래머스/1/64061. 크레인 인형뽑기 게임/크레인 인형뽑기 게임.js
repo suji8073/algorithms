@@ -16,7 +16,7 @@ function solution(board, moves) {
     var stack = [];
     for (const move of moves) {
         let target = numArr[move-1].shift();
-        if (target === undefined) continue;
+        if (!target) continue;
         
         if (stack.at(-1) === target) {
             answer += 2;
