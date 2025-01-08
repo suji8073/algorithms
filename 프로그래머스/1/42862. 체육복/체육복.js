@@ -1,7 +1,5 @@
 function solution(n, lost, reserve) {
     const arr = Array(n).fill(1);
-    lost.sort();
-    reserve.sort();
 
     lost.map(l => arr[l-1]--);
     reserve.map(r => arr[r-1]++);
@@ -23,12 +21,3 @@ function solution(n, lost, reserve) {
     
     return arr.filter(a => a!== 0).length;
 }
-
-// function solution(n, lost, reserve) {
-//     lost.sort();
-//     reserve.sort();
-//     console.log(lost)
-//     for (const num of lost){
-         
-//     }
-// }
