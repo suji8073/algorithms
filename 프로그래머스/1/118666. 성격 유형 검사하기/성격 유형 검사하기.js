@@ -10,11 +10,8 @@ function solution(survey, choices) {
         result[index] += score[choices[i]-1] * (a < b ? 1 : -1);
     }
     
+    return result.reduce((acc, cur, i) => {
+        return acc + (cur >= 0 ? key[i*2] : key[i*2+1])
+    }, '')
     
-    var answer = '';
-    for (let k = 0; k < result.length; k++) {
-        answer += result[k] >= 0 ? key[k*2] : key[k*2+1];
-    }
-    
-    return answer;
 }
