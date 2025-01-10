@@ -1,13 +1,18 @@
 function findIndex(num){
     const keypads = [[1,4,7,'*'], [2,5,8,0], [3,6,9,'#']];
     
-    for (let i = 0; i < keypads.length; i++) {
-        for (let j = 0; j < keypads[0].length; j++){
-            if (num === keypads[i][j]){
-                return [i, j];
+    for (let row = 0; row < keypads.length; row++) {
+        for (let col = 0; col < keypads[0].length; col++){
+            if (num === keypads[row][col]){
+                return [row, col];
             }
         }
     }
+    return null;
+}
+
+function calcIndex(arr, target){
+    return Math.abs(arr[0] - target[0]) + Math.abs(arr[1] - target[1]);
 }
 
 
@@ -16,8 +21,7 @@ function solution(numbers, hand) {
     let left = [0, 3];
     let right = [2, 3];
     
-    for (let i = 0; i < numbers.length; i++) {
-        const num = numbers[i];
+    for (const num of numbers) {
         const index = findIndex(num);
         
         if (![2, 5, 8, 0].includes(num)) {
@@ -30,13 +34,12 @@ function solution(numbers, hand) {
             continue;
         }
         
-
-        console.log(num, index, left, right)
-        const leftIndex = index.reduce((acc, cur, i) =>  acc + Math.abs(left[i] - cur), 0);
-        const rightIndex = index.reduce((acc, cur, i) =>  acc + Math.abs(right[i] - cur), 0);
+        const calcLeft = calcIndex(index, left);
+        const calcRight = calcIndex(index, right);
         
-        const isHandLeft = hand === 'left';
-        if (leftIndex === rightIndex){
+        if (calcLeft === calcRight) {
+            const isHandLeft = hand === 'left';
+            
             if (isHandLeft) left = index;
             else right = index;
 
@@ -44,14 +47,10 @@ function solution(numbers, hand) {
             continue;
         }
         
-        if (leftIndex < rightIndex) {
-            left = index;
-            result += 'L'
-            continue;
-        }
-       
-        right = index;
-        result += 'R'
+        if (calcLeft < calcRight) left = index;
+        else right = index;
+
+        result += calcLeft < calcRight ? 'L' : 'R'
     }
     
     return result;
