@@ -1,30 +1,24 @@
 function solution(new_id) {
-    var answer = '';
+    // 1단계 
+    var answer = new_id.toLowerCase();
     
-    const regex = /^[a-zA-Z0-9._-]/;
-    const upperRegex = /^[A-Z]/;
-    [...new_id].map((id) => {
-        if (regex.test(id)){
-            if (upperRegex.test(id)){
-                answer += id.toLowerCase();
-            } else answer += id;
-        }
-    });
+    // 2단계
+    answer = answer.replace(/[^a-z0-9._-]/g, '');
     
-    answer = answer.replace(/\.{2,}/g, '.');
-   
+    // 3단계
+    answer = answer.replace(/\.{2,}/g, '.')
     
-    if (answer[0] === '.') answer = answer.slice(1);
-    if (answer[answer.length-1] === '.') answer = answer.slice(0, answer.length-1);
+    // 4단계
+    answer = answer.replace(/^\.|\.$/g, '')
     
-    if (answer === ''){
-        answer += 'a';
-    }
-
-    if (answer.length >= 16) answer = answer.slice(0, 15);
-    if (answer[answer.length-1] === '.') answer = answer.slice(0, answer.length-1);
-   if (answer.length <= 2) answer+= answer[answer.length-1].repeat(3-answer.length)
-        
+    // 5단계
+    if (answer === '') answer = 'a';
+    
+    // 6단계
+    if (answer.length >= 16) answer = answer.slice(0, 15).replace(/\.$/g, '');
+    
+    // 7단계
+    if (answer.length <= 2) answer = answer.padEnd(3 , answer[answer.length - 1])
 
     return answer;
 }
