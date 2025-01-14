@@ -23,8 +23,6 @@ function solution(park, routes) {
         const [op, n] = route.split(' ');
         const routeIndex = opArr[op];
         
-
-
         for (let i = 0; i < n; i++) {
             const x = index[0] + routeIndex[0];
             const y = index[1] + routeIndex[1];
@@ -33,7 +31,7 @@ function solution(park, routes) {
                 index = result;
                 break;
             }
-            index = [x, y]
+            index = [x, y];
         }
         
          result = index;
