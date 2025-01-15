@@ -5,32 +5,16 @@ function solution(id_list, reports, k) {
     for (const report of new Set(reports)){
         const [a, b] = report.split(' ');
         
-        if (reportMap.has(a)){
-          
-                reportMap.set(a, [...reportMap.get(a), b]);
-                countMap.set(b, countMap.has(b) ? countMap.get(b) + 1 : 1);
-         
-        } else {
-            reportMap.set(a, [b]);
-            countMap.set(b, countMap.has(b) ? countMap.get(b) + 1 : 1);
+        if (!reportMap.has(a)){
+            reportMap.set(a, []);
         }
+        reportMap.get(a).push(b);
+        
+        countMap.set(b, countMap.has(b) ? countMap.get(b) + 1 : 1);
     }
+    
+    const peopleArr = new Set(Array.from(countMap).filter(([_, count]) => count >= k).map(([key]) => key));
+    
+    return id_list.map((id) => (reportMap.get(id) || []).filter(user => peopleArr.has(user)).length);
 
- 
-    let peopleArr = [];
-    Array.from(countMap).forEach(([key, value]) => { if (value >= k) peopleArr.push(key)});
-    
-    if (peopleArr.length === 0){
-        return Array(id_list.length).fill(0);
-    }
-    
-    const idMap = new Map();
-    id_list.forEach((id) => idMap.set(id, 0));
-    
-    for ([key, value] of reportMap){
-        const len = value.filter((v) => peopleArr.includes(v)).length;
-        idMap.set(key, idMap.get(key) + len);
-    }
- 
-    return [...idMap.values()];
 }
