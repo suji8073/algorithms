@@ -2,15 +2,14 @@ function solution(id_list, reports, k) {
     const countMap = new Map();
     const reportMap = new Map();
     
-    for (const report of reports){
+    for (const report of new Set(reports)){
         const [a, b] = report.split(' ');
         
         if (reportMap.has(a)){
-            const array = reportMap.get(a);
-            if (!array.includes(b)){
-                reportMap.set(a, [...array, b]);
+          
+                reportMap.set(a, [...reportMap.get(a), b]);
                 countMap.set(b, countMap.has(b) ? countMap.get(b) + 1 : 1);
-            }
+         
         } else {
             reportMap.set(a, [b]);
             countMap.set(b, countMap.has(b) ? countMap.get(b) + 1 : 1);
