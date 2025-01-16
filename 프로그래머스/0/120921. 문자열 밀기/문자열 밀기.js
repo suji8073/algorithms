@@ -1,6 +1,6 @@
 function solution(A, B) {
-    
     const len = A.length;
+    
     for (let i = 0; i < len; i++){
         if (A === B) {
             return i;
@@ -9,5 +9,4 @@ function solution(A, B) {
     }
     
     return -1;
-  
 }
