@@ -2,8 +2,8 @@ function solution(n,a,b) {
     var array = Array.from({length: n}, (_, i) => 1 + i);
     
     const ab = [a, b].sort((a, b) => a - b);
-    
     let count = 1;
+    
     while(true) {
         var oldArr = [];
         for (let i = 0; i < array.length; i+= 2) {
