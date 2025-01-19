@@ -7,7 +7,6 @@ function solution(lines) {
         map.set(i, 0);
     }
     
-
     for (let i = 0; i < lines.length - 1; i++) {
         for (let j = i + 1; j < lines.length; j++) {
             const [start1, end1] = lines[i];
