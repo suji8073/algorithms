@@ -1,23 +1,24 @@
 function solution(cacheSize, cities) {
+    const HIT = 1; MISS = 5;
+    
     var stack  = [];
     var answer = 0;
     
     for (var city of cities) {
         city = city.toLowerCase();
-        if (stack.includes(city)) {
+        const index = stack.indexOf(city);
+        
+        if (index !== -1) {
             stack.splice(stack.indexOf(city), 1);
             stack.push(city);
-            answer+= 1;
+            answer+= HIT;
             continue;
-        }
+        } 
         
-        answer+= 5;
+        answer+= MISS;
         stack.push(city);
-
-        if (stack.length > cacheSize) {
-            stack = stack.slice(1, cacheSize + 1);
-            continue;
-        }
+        
+        if (stack.length > cacheSize) stack = stack.slice(1, cacheSize + 1)
     }
 
     return answer;
