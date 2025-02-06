@@ -1,19 +1,15 @@
 function solution(numbers, target) {
-    const signs = [-1, 1];
+    let count = 0;
+    solve(0, 0);
     
-    const len = numbers.length;
-    const visited = Array(len).fill(false);
-    
-    let result = [numbers[0] * -1, numbers[0] * 1];
-    for (let i = 1; i < len; i++) {
-        const num = numbers[i];
-        let arr = [];
-        for (let j = 0; j < result.length; j++){
-            arr.push(result[j] + num);
-            arr.push(result[j] - num);
+    function solve(x, sum) {
+        if (x === numbers.length){
+            if (sum === target) count++;
+            return;
         }
-        result = arr;
+        solve(x + 1, sum + numbers[x]);
+        solve(x + 1, sum - numbers[x]);
     }
    
-    return result.filter((num) => num === target).length;
+    return count;
 }
