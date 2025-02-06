@@ -3,7 +3,6 @@ function solution(n, computers) {
     const visited = Array(len).fill(false);
     
     const graph = {};
-    
     for (let i = 0; i < len; i++) {
         graph[i+1] = [];
         for (let j = 0; j < len; j++){
@@ -20,26 +19,22 @@ function solution(n, computers) {
             bfs(i + 1);
         }
     }
+    
     return count;
     
-    function bfs(start){
+    function bfs(start) {
         const queue = [[start]];
         visited[start - 1] = true;
         
-        while(queue.length > 0){
+        while(queue.length > 0) {
             const key = queue.shift();
             
-            for (const value of graph[key]){
-                if (!visited[value-1]){
+            for (const value of graph[key]) {
+                if (!visited[value-1]) {
                     visited[value-1] = true;
                     queue.push(value)
                 }
             }
         }
     }
-    
-
-    
-    var answer = 0;
-    return graph;
 }
