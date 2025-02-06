@@ -1,62 +1,60 @@
 const fs = require('fs');
 const input = fs.readFileSync('/dev/stdin', 'utf8').trim().split('\n');
 
-const [N, M, V] = input[0].split(' ').map(Number);
-const graph = input.slice(1).map((row) => row.split(' ').map(Number));
+const [n, m, v] = input[0].trim().split(' ').map(Number);
+const arr = input.slice(1).map((row) => row.trim().split(' ').map(Number));
 
-const map = new Map();
-for (let i = 0; i < M; i++) {
-  const [num1, num2] = graph[i];
-  map.set(num1, map.has(num1) ? sorting([...map.get(num1), num2]) : [num2]);
-  map.set(num2, map.has(num2) ? sorting([...map.get(num2), num1]) : [num1]);
+const graph = {};
+for (const [start, end] of arr) {
+  if (!graph[start]) graph[start] = [];
+  if (!graph[end]) graph[end] = [];
+
+  graph[start].push(end);
+  graph[end].push(start);
 }
 
-function sorting(arr) {
-  return arr.sort((a, b) => a - b);
+for (const key in graph) {
+  graph[key].sort((a, b) => a - b);
 }
 
-let init = Array(N).fill(false);
+const dfsVisited = Array(n).fill(false);
 const dfsArr = [];
-const bfsArr = [];
+dfs(v);
 
-function dfs(cnt) {
-  if (dfsArr.length === N) return;
+function dfs(current) {
+  if (dfsArr.length === n) return;
 
-  dfsArr.push(cnt);
-  init[cnt - 1] = true;
+  dfsVisited[current - 1] = true;
+  dfsArr.push(current);
 
-  if (!map.has(cnt)) return;
-
-  for (const value of map.get(cnt)) {
-    if (!init[value - 1]) {
+  for (const value of graph[current] || []) {
+    if (!dfsVisited[value - 1]) {
       dfs(value);
     }
   }
 }
 
-dfs(V);
-
-init = Array(N).fill(false);
+const bfsVisited = Array(n).fill(false);
+const bfsArr = [];
 bfs();
 
 function bfs() {
-  const queue = [V];
-  bfsArr.push(V);
-  init[V - 1] = true;
+  const queue = [v];
+  bfsVisited[v - 1] = true;
+  bfsArr.push(v);
 
-  while (true) {
-    if (queue.length === 0) break;
-    const current = queue.shift();
-    if (!map.has(current)) continue;
+  while (queue.length > 0) {
+    const next = queue.shift();
 
-    for (const value of map.get(current)) {
-      if (!init[value - 1]) {
+    for (const value of graph[next] || []) {
+      if (!bfsVisited[value - 1]) {
+        bfsVisited[value - 1] = true;
         bfsArr.push(value);
-        init[value - 1] = true;
         queue.push(value);
       }
     }
   }
 }
+
 console.log(dfsArr.join(' '));
 console.log(bfsArr.join(' '));
