@@ -1,27 +1,24 @@
 const fs = require('fs');
-const [n, ...inputFile] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
+const [n, ...arr] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
-const role = ['top', 'size', 'empty', 'pop'];
+const stack = [];
+const result = [];
 
-let stack = [];
 for (let i = 0; i < Number(n); i++) {
-  const input = inputFile[i];
+  const str = arr[i];
 
-  if (!role.includes(input)) {
-    const [_, num] = input.split(' ');
-    stack.push(Number(num));
-    continue;
+  if (str === 'top') {
+    result.push(stack[stack.length - 1] ?? -1);
+  } else if (str === 'size') {
+    result.push(stack.length);
+  } else if (str === 'empty') {
+    result.push(stack.length === 0 ? 1 : 0);
+  } else if (str === 'pop') {
+    result.push(stack.length === 0 ? -1 : stack.pop());
+  } else {
+    const num = Number(str.split(' ')[1]);
+    stack.push(num);
   }
-
-  if (input === 'top' || input === 'pop') {
-    if (stack.length === 0) {
-      console.log(-1);
-      continue;
-    }
-    console.log(input === 'top' ? stack[stack.length - 1] : stack.pop());
-    continue;
-  }
-
-  if (input === 'size') console.log(stack.length);
-  else if (input === 'empty') console.log(stack.length === 0 ? 1 : 0);
 }
+
+console.log(result.join('\n'));
