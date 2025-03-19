@@ -1,14 +1,8 @@
 function solution(arr) {
-    var num = arr[0];
-    var answer = [num];
+    const result = arr.filter((str, i, origin) => {
+        if (i === 0) return true;
+        return str === origin[i-1] ? false : true;
+    });
     
-    for (var i = 1; i < arr.length; i++){
-        if (num !== arr[i]){
-            answer.push(arr[i]);
-        } 
-        num = arr[i];
-    }
-    
-    return answer
-
+    return result;
 }
