@@ -1,7 +1,10 @@
 function solution(numbers) {
-    if (numbers.every(num => num === 0)){
-        return "0"
-    }
-    const strNumArr = numbers.map(String).sort((a, b) => Number(b + a) - Number(a + b));
-    return strNumArr.join('');
+    numbers.sort((a, b) => {
+        const strA = a + "";
+        const strB = b + "";
+        
+        return Number(strA + strB) > Number(strB + strA) ? -1 : 1;
+    });
+    
+    return numbers[0] === 0 ? '0' : numbers.join('');
 }
