@@ -1,13 +1,7 @@
 function solution(s) {
-    const length = s.length;
-    
-    if (length !== 4 && length !== 6) return false;
-    
-    for (var i = 0; i < length ; i++){
-        if (isNaN(s[i])){
-            return false;
-        }
+    if (s.length !== 4 && s.length !== 6){
+        return false;
     }
     
-    return true;
+    return s.split('').every(str => !isNaN(str));
 }
