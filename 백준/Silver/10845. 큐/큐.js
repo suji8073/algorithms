@@ -1,27 +1,25 @@
 const fs = require('fs');
-const [n, ...inputFile] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
+const [n, ...arr] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
-let stack = [];
+const queue = [];
+const result = [];
+
 for (let i = 0; i < Number(n); i++) {
-  const input = inputFile[i];
+  const [str, num] = arr[i].split(' ');
 
-  if (input.includes('push')) {
-    const [_, num] = input.split(' ');
-    stack.push(Number(num));
-    continue;
+  if (str === 'push') {
+    queue.push(num);
+  } else if (str === 'pop') {
+    result.push(queue.length === 0 ? -1 : queue.shift());
+  } else if (str === 'size') {
+    result.push(queue.length);
+  } else if (str === 'empty') {
+    result.push(queue.length === 0 ? 1 : 0);
+  } else if (str === 'front') {
+    result.push(queue.length === 0 ? -1 : queue[0]);
+  } else if (str === 'back') {
+    result.push(queue.length === 0 ? -1 : queue[queue.length - 1]);
   }
-
-  if (input === 'front' || input === 'back' || input === 'pop') {
-    if (stack.length === 0) {
-      console.log(-1);
-      continue;
-    }
-
-    if (input === 'front') console.log(stack[0]);
-    else if (input === 'back') console.log(stack[stack.length - 1]);
-    else console.log(stack.shift());
-  }
-
-  if (input === 'size') console.log(stack.length);
-  else if (input === 'empty') console.log(stack.length === 0 ? 1 : 0);
 }
+
+console.log(result.join('\n'));
