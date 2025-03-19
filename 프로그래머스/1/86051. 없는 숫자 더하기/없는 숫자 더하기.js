@@ -1,3 +1,4 @@
 function solution(numbers) {
-    return 45 - numbers.reduce((acc, cur)=> acc + cur);
+    const sum = numbers.reduce((acc, cur) => acc + cur, 0)
+    return 45 - sum;
 }
