@@ -1,16 +1,19 @@
-var fs = require('fs');
-const input = require('fs').readFileSync('/dev/stdin').toString().split('\n');
+const fs = require('fs');
+const inputFile = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
-let a = parseInt(input[0].split(' ')[0]);
-let b = parseInt(input[0].split(' ')[1]);
-let c = parseInt(input[1]);
+let arr = inputFile[0].split(' ').map(Number);
+const min = Number(inputFile[1]);
 
-let h = 0;
-let m = 0;
+arr[1] += min;
+const calcPlusHour = Math.floor(arr[1] / 60);
 
-h = Math.floor((a * 60 + b + c) / 60);
-m = (a * 60 + b + c) % 60;
-if (h >= 24) {
-  h -= 24;
+if (calcPlusHour > 0) {
+  arr[0] += calcPlusHour;
+  arr[1] %= calcPlusHour * 60;
 }
-console.log(`${h} ${m}`);
+
+if (arr[0] >= 24) {
+  arr[0] %= 24;
+}
+
+console.log(arr.join(' '));
