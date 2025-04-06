@@ -1,18 +1,28 @@
 const fs = require('fs');
 const [N, M] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split(' ').map(Number);
+
 const arr = Array.from({ length: N }, (_, i) => i + 1);
+let visited = Array(N).fill(false);
 
-const result = getCombination(arr, M);
-console.log(result.map((row) => row.join(' ')).join('\n'));
+const result = [];
+const selected = [];
 
-function getCombination(array, selectNum) {
-  const result = [];
-  if (selectNum === 1) return array.map((el) => [el]);
-  array.forEach((fixed, index, origin) => {
-    const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
-    const combinations = getCombination(rest, selectNum - 1);
-    const num = combinations.map((el) => [fixed, ...el]);
-    result.push(...num);
+backTracking(0);
+console.log(result.join('\n'));
+
+function backTracking(count) {
+  if (count === M) {
+    result.push(selected.join(' '));
+    return;
+  }
+
+  arr.forEach((num, i) => {
+    if (visited[i] === false) {
+      visited[i] = true;
+      selected.push(num);
+      backTracking(count + 1);
+      visited[i] = false;
+      selected.pop();
+    }
   });
-  return result;
 }
