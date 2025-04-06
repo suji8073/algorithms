@@ -6,23 +6,12 @@ function solution(answers) {
     ];
     
     const num = Math.floor(answers.length / 5) + 1;
-    const resultArr = [];
+    const result = [];
     array.forEach((arr, index) => {
-        const newAnswers = [...answers];
-        
-        let count = 0;
-        while (newAnswers.length > 0){
-            const target = newAnswers.splice(0, arr.length);
-            const len = target.filter((t, i) => t === arr[i]).length;
-            count+= len;
-        }
-        resultArr.push(count);
+        const len = answers.filter((a, i) => a === arr[i % arr.length]).length;
+        result.push(len);
     });
     
-    const max = Math.max(...resultArr);
-    const result = [];
-    resultArr.map((r, i) => {
-        if (r === max) result.push(i+1);
-    })
-    return result;
+    const max = Math.max(...result);
+    return result.flatMap((r, i) => r === max ? [i+1] : []);
 }
