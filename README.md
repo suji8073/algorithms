@@ -1,5 +1,7 @@
 # algorithms
 `javascript`
 
-- Programmes
 - Softeer
+- 백준
+- Programmes
+
