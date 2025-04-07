@@ -1,40 +1,37 @@
 function solution(n, computers) {
-    const len = computers.length;
-    const visited = Array(len).fill(false);
-    
-    const graph = {};
-    for (let i = 0; i < len; i++) {
-        graph[i+1] = [];
-        for (let j = 0; j < len; j++){
+    const map = new Map();
+    for (let i = 0; i < n; i++){
+        for (let j = 0; j < n; j++){
             if (i !== j && computers[i][j] === 1){
-                graph[i+1].push(j+1);
+                map.set(i, map.has(i) ? [j, ...map.get(i)] : [j]);
             }
         }
     }
     
-    let count = 0;
-    for (let i = 0; i < len; i++) {
-        if (!visited[i]){
-            count++;
-            bfs(i + 1);
+    const visited = Array(n).fill(false);
+    
+    let result = 0;
+    for (let i = 0; i < n; i++) {
+        if (visited[i] === false){
+            result++;
+            visited[i] = true;
+            dfs(i);
         }
     }
     
-    return count;
+    return result;
     
-    function bfs(start) {
-        const queue = [[start]];
-        visited[start - 1] = true;
-        
-        while(queue.length > 0) {
-            const key = queue.shift();
-            
-            for (const value of graph[key]) {
-                if (!visited[value-1]) {
-                    visited[value-1] = true;
-                    queue.push(value)
-                }
+    function dfs(start){
+        for (const value of map.get(start) ?? []){
+            if (visited[value] === false){
+                visited[value] = true;
+                dfs(value)
             }
         }
     }
+    
+    
+    
+    console.log(map)
+   
 }
