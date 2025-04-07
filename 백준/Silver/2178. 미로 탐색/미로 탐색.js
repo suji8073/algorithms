@@ -1,14 +1,14 @@
 const fs = require('fs');
-const input = fs.readFileSync('/dev/stdin', 'utf8').trim().split('\n');
+const input = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
 const [N, M] = input[0].split(' ').map(Number);
-const arr = input.slice(1).map((row) => row.split('').map((n) => n === '1'));
+const arr = input.slice(1).map((row) => row.split('').map((v) => v === '1'));
 
 const vectors = [
-  [-1, 0],
-  [1, 0],
   [0, 1],
   [0, -1],
+  [1, 0],
+  [-1, 0],
 ];
 
 bfs();
@@ -22,16 +22,16 @@ function bfs() {
 
     if (x === N - 1 && y === M - 1) {
       console.log(count);
-      break;
+      return;
     }
 
     for (const vector of vectors) {
-      const tx = vector[0] + x;
-      const ty = vector[1] + y;
+      const nx = x + vector[0];
+      const ny = y + vector[1];
 
-      if (tx >= 0 && tx < N && ty >= 0 && ty < M && arr[tx][ty]) {
-        queue.push([tx, ty, count + 1]);
-        arr[tx][ty] = false;
+      if (nx >= 0 && nx <= N - 1 && ny >= 0 && ny <= M - 1 && arr[nx][ny]) {
+        arr[nx][ny] = false;
+        queue.push([nx, ny, count + 1]);
       }
     }
   }
