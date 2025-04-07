@@ -1,15 +1,18 @@
 function solution(numbers, target) {
-    let count = 0;
-    solve(0, 0);
+    let result = 0;
     
-    function solve(x, sum) {
-        if (x === numbers.length){
-            if (sum === target) count++;
+    dfs(0, numbers[0]);
+    dfs(0, -numbers[0]);
+    
+    return result;
+    
+    function dfs(index, sum) {
+        if (index === numbers.length - 1) {
+            if (sum === target) result++;
             return;
         }
-        solve(x + 1, sum + numbers[x]);
-        solve(x + 1, sum - numbers[x]);
+        dfs(index + 1, sum - numbers[index + 1]);
+        dfs(index + 1, sum + numbers[index + 1])
     }
-   
-    return count;
+
 }
