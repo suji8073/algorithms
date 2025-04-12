@@ -1,13 +1,10 @@
 const fs = require('fs');
-const input = fs.readFileSync('/dev/stdin', 'utf-8').trim().split(' ').map(Number);
+const str = fs.readFileSync('/dev/stdin', 'utf-8').trim().replaceAll(' ', '');
 
-const isAscending = input[0] === 1;
-for (let i = 0; i < input.length - 1; i++) {
-  const num = isAscending ? 1 : -1;
-  if (input[i] + num !== input[i + 1]) {
-    console.log('mixed');
-    return;
-  }
+if (str === '12345678') {
+  console.log('ascending');
+} else if (str === '87654321') {
+  console.log('descending');
+} else {
+  console.log('mixed');
 }
-
-console.log(isAscending ? 'ascending' : 'descending');
