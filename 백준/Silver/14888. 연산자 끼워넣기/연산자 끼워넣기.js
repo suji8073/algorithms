@@ -1,67 +1,65 @@
 const fs = require('fs');
-const input = fs
-  .readFileSync('/dev/stdin', 'utf-8')
-  .trim()
-  .split('\n')
-  .map((row) => row.split(' ').map(Number));
+const input = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
-const [N, arr, operator] = input;
+const arr = input[1].split(' ').map(Number);
+const [plus, minus, times, division] = input[2].split(' ').map(Number);
 
-const first = arr.shift();
-const calc = [];
-operator.map((num, idx) => {
-  for (let i = 0; i < num; i++) {
-    calc.push(idx);
-  }
-});
+const str =
+  '+'.repeat(plus) +
+  '-'.repeat(minus) +
+  '*'.repeat(times) +
+  '/'.repeat(division);
 
-const visited = Array(N - 1).fill(false);
-const select = [];
+const combinations = getPermutation([...str], str.length);
 
 let min = Number.MAX_SAFE_INTEGER;
 let max = Number.MIN_SAFE_INTEGER;
 
-backTracking(0);
+for (const comb of combinations) {
+  let sum = arr[0];
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (comb[i] === '+') sum += arr[i + 1];
+    else if (comb[i] === '-') sum -= arr[i + 1];
+    else if (comb[i] === '*') sum *= arr[i + 1];
+    else {
+      sum =
+        sum < 0 ? -Math.floor(-sum / arr[i + 1]) : Math.floor(sum / arr[i + 1]);
+    }
+  }
 
-console.log(max ? max : 0);
-console.log(min ? min : 0);
+  min = Math.min(min, sum);
+  max = Math.max(max, sum);
+}
 
-function backTracking(depth) {
-  if (depth === N - 1) {
-    let sum = first;
-    for (let i = 0; i < arr.length; i++) {
-      switch (select[i]) {
-        case 0:
-          sum += arr[i];
-          break;
-        case 1:
-          sum -= arr[i];
-          break;
-        case 2:
-          sum *= arr[i];
-          break;
-        case 3:
-          sum = sum < 0 ? -Math.floor(-sum / arr[i]) : Math.floor(sum / arr[i]);
-          break;
-      }
+console.log(max === 0 ? 0 : max);
+console.log(min === 0 ? 0 : min);
+
+function getPermutation(arr, selectNum) {
+  const result = [];
+  const visited = Array(arr.length).fill(false);
+  const temp = [];
+
+  function backTracking(depth) {
+    if (depth === selectNum) {
+      result.push([...temp]);
+      return;
     }
 
-    min = Math.min(sum, min);
-    max = Math.max(sum, max);
-    return;
+    let prev = null;
+    for (let i = 0; i < arr.length; i++) {
+      if (visited[i]) continue;
+      if (prev === arr[i]) continue;
+      prev = arr[i];
+
+      visited[i] = true;
+      temp.push(arr[i]);
+      backTracking(depth + 1);
+
+      visited[i] = false;
+      temp.pop();
+    }
   }
 
-  let prev = null;
-  for (let i = 0; i < calc.length; i++) {
-    if (visited[i]) continue;
-    if (calc[i] === prev) continue;
-    prev = calc[i];
-
-    visited[i] = true;
-    select.push(calc[i]);
-    backTracking(depth + 1);
-
-    visited[i] = false;
-    select.pop();
-  }
+  backTracking(0);
+  return result;
 }
