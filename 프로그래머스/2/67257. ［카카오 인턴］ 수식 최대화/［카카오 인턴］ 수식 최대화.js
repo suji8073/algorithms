@@ -14,8 +14,7 @@ function solution(expression) {
 }
 
 function getNum(numbers, calcs, rank) {
-    while (rank.length > 0) {
-        const r = rank.shift();
+    for (const r of rank) {
         const len = calcs.length;
 
         for (let i = 0; i < len; i++){
