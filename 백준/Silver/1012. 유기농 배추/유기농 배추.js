@@ -1,6 +1,13 @@
 const fs = require('fs');
 const [T, ...input] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
+const vectors = [
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+  [1, 0],
+];
+
 let index = 0;
 for (let i = 0; i < Number(T); i++) {
   const [M, N, K] = input[index].split(' ').map(Number);
@@ -16,22 +23,28 @@ for (let i = 0; i < Number(T); i++) {
   for (let i = 0; i < M; i++) {
     for (let j = 0; j < N; j++) {
       if (visited[i][j] === true) {
+        bfs(i, j);
         count++;
-        dfs(i, j);
       }
     }
   }
-
   console.log(count);
 
-  function dfs(start, end) {
-    if (start < 0 || start >= M || end < 0 || end >= N || !visited[start][end])
-      return;
+  function bfs(start, end) {
+    const queue = [[start, end]];
 
-    visited[start][end] = false;
-    dfs(start - 1, end);
-    dfs(start + 1, end);
-    dfs(start, end - 1);
-    dfs(start, end + 1);
+    while (queue.length > 0) {
+      const [x, y] = queue.shift();
+
+      for (const vector of vectors) {
+        const nx = x + vector[0];
+        const ny = y + vector[1];
+
+        if (nx >= 0 && nx < M && ny >= 0 && ny < N && visited[nx][ny]) {
+          visited[nx][ny] = false;
+          queue.push([nx, ny]);
+        }
+      }
+    }
   }
 }
