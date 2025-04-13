@@ -1,26 +1,37 @@
 function solution(tickets) {
-    const graph = {};
+    const len = tickets.length;
+    const map = new Map();
     
-    for (let i = 0; i < tickets.length; i++) {
+    for (let i = 0; i < len; i++) {
         const [start, end] = tickets[i];
-
-        if (!graph[start]) graph[start] = [];
-        graph[start].push(end)
+        map.set(start, map.has(start) ? [...map.get(start), `${end}-${i}`] : [`${end}-${i}`]);
+    };
+    
+    for (const [key, value] of map){
+        value.sort();
     }
     
-    for (const key in graph){
-        graph[key].sort();
-    }
+    let result = null;
+    dfs(['ICN'], Array(len).fill(false));
     
-    const dfsArr = [];
-    dfs("ICN")
-    return dfsArr;
+    return result;
     
-    function dfs(start) {
-        while(graph[start] && graph[start].length > 0){
-            const next = graph[start].shift();
-            dfs(next);
+    function dfs(arr, visited) {
+        if (arr.length === len + 1){
+            if (!result) result = [...arr]
+            return;
         }
-        dfsArr.unshift(start);
+        
+        const last = arr[arr.length-1];
+        for (const value of map.get(last) || []) {
+            const [name, i] = value.split('-');
+            if (!visited[i]) {
+                const newVisited = [...visited];
+                newVisited[i] = true;
+                dfs([...arr, name], newVisited);
+            }
+        }
     }
+        
 }
+
