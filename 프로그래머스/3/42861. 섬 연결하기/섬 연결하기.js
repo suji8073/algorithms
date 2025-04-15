@@ -1,7 +1,7 @@
 function solution(n, costs) {
     costs.sort((a, b) => a[2] - b[2]);
     const parent = Array.from({length: n}, (_, i) => i);
-    
+
     let costSum = 0;
     for (const [start, end, cost] of costs){
         if (!isSameParent(start, end)){
@@ -23,11 +23,9 @@ function solution(n, costs) {
         }
     }
 
-    
     function isSameParent(x, y){
         const parentX = getFindParent(x);
         const parentY = getFindParent(y);
-        
         return parentX === parentY;
     }
     
@@ -35,7 +33,6 @@ function solution(n, costs) {
         if (parent[item] === item) {
             return item;
         }
-        
         return parent[item] = getFindParent(parent[item]);
     }
    
