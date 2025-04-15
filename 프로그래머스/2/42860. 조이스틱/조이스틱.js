@@ -1,25 +1,30 @@
 function solution(name) {
-    let sum = 0;
-    for (const char of [...name]) {
-        const num = char.charCodeAt();
-        sum += Math.min(num - 65, 90 - num + 1)
-    }
-
-    if (![...name].includes('A')){
-        return sum + name.length - 1;
+    const arr = [...name];
+    const len = arr.length;
+    
+    const result = arr.reduce((acc, cur) => acc + getCount(cur), 0);
+    
+    if (!arr.includes('A')){
+        return result + len - 1;
     }
     
-    console.log(name)
-    let result = name.length - 1;
-    for (let i = 0; i < name.length; i++){
-        let next = i + 1;
-        while(next < name.length && name[next] === 'A'){
-            next++;
+    let min = len - 1;
+    
+    for (let i = 0; i < len; i++) {
+        let index = i + 1;
+        while (index < name.length && arr[index] === 'A'){
+            index++;
         }
-        const move = i + i + name.length - next;
-        result = Math.min(move, result, i + (name.length - next) * 2)
+     
+        const path1 = i + (len - index) * 2;
+        const path2 = i + i + len - index;
+        min = Math.min(min, path1, path2);
     }
-    
-    return result + sum;
+    return result + min;
+}
+
+function getCount(char){
+    const num = char.charCodeAt();
+    return Math.min(90 - num + 1, num - 65);
 }
 
