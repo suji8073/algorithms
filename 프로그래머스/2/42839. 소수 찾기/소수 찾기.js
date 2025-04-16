@@ -1,34 +1,51 @@
 function solution(numbers) {
-    let result = 0;
     const numArr = [...numbers];
+    const result = getPermutation(numArr);
     
-    let combArr = [];
-    for (let i = 1; i <= numArr.length; i++){
-        combArr.push(...getCombination(numArr, i))
-    }
-    
-    combArr = [...new Set(combArr.map(row => Number(row.join(''))))];
-    return combArr.filter((comb) => checkArr(comb)).length;
+    return [...new Set(result)].filter(r => checkNum(r)).length;
 }
 
-function checkArr(num) {
-    if (num === 0 || num === 1) return false;
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-        if (num % i === 0) return false
+function checkNum(num){
+    if (num === 1) return false;
+    
+    for (let i = 2; i <= Math.sqrt(num); i++){
+        if (num % i === 0) return false;
     }
+    
     return true;
 }
 
-function getCombination(arr, selectNum) {
-    const result = [];
-    if (selectNum === 1) return arr.map((el) => [el]);
+function getPermutation(arr){
+    const len = arr.length;
     
-    arr.forEach((fixed, index, origin) => {
-        const rest = [...origin.slice(0, index), ...origin.slice(index + 1)];
-        const combination = getCombination(rest, selectNum - 1);
-        const gg = combination.map((el) => [fixed, ...el]);
-        result.push(...gg);
-    });
+    const result = [];
+    const visitied = Array(len).fill(false);
+    const path = [];
+    
+    arr.forEach((_, i) => backTracking(i+1));
     
     return result;
+    
+    function backTracking(selectNum){
+        if (path.length === selectNum) {
+            if (path[0] !== '0') {
+                result.push(Number(path.join('')));
+            }
+            return;
+        }
+        
+        for (let i = 0; i < arr.length; i++){
+            if (!visitied[i]){
+                visitied[i] = true;
+                path.push(arr[i]);
+                
+                backTracking(selectNum);
+                
+                visitied[i] = false;
+                path.pop();
+            }
+        }
+    }
 }
+
+
