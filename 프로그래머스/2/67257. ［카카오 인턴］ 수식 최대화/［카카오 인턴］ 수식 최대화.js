@@ -1,56 +1,42 @@
+const map = [
+    ['*', '-', '+'],
+    ['*', '+', '-'],
+    ['+', '-', '*'],
+    ['+', '*', '-'],
+    ['-', '+', '*'],
+    ['-', '*', '+'],
+]
+
 function solution(expression) {
-    const numArr = expression.match(/\d+/g).map(Number);
-    const calcArr = expression.match(/[+\-*]/g);
+    const numArr = expression.match(/\d+/g).map(Number)
+    const calcArr = expression.match(/[*+-]/g);
     
-    const order = getOrder(calcArr);
-    
-    let result = Number.MIN_SAFE_INTEGER;
-    order.forEach(c => {
-        const num = getNum([...numArr], [...calcArr], c);
-        result = Math.max(num, result)
-    });
-    
-    return result;
-}
+    let result = 0;
 
-function getNum(numbers, calcs, rank) {
-    for (const r of rank) {
-        const len = calcs.length;
-
-        for (let i = 0; i < len; i++){
-            if (calcs[i] !== r) continue;
-            
-            let num = 0;
-            if (r === '*') num = numbers[i] * numbers[i+1];
-            else if (r === '-') num = numbers[i] - numbers[i+1];
-            else num = numbers[i] + numbers[i+1];
-            
-            numbers[i] = '';
-            numbers[i+1] = num;
-            calcs[i] = '';
+    for (const row of map) {
+        const operation = [...row];
+        let targetNum = [...numArr];
+        let targetCalc = [...calcArr];
+        
+        while (operation.length > 0) {
+            const op = operation.shift();
+            for (let i = 0; i < targetCalc.length; i++){
+                if (targetCalc[i] === op) {
+                    if (op === '+') targetNum[i + 1] = targetNum[i + 1] + targetNum[i];
+                    else if (op === '-') targetNum[i + 1] = targetNum[i] - targetNum[i + 1]
+                    else targetNum[i + 1] *= targetNum[i];
+                    
+                    targetNum[i] = null;
+                    targetCalc[i] = null;
+                }
+            }
+            targetNum = targetNum.filter(t => t !== null);
+            targetCalc = targetCalc.filter(t => t !== null);
         }
-        numbers = numbers.filter(n => n !== '');
-        calcs = calcs.filter(c => c !== '');
+        
+        const sum = targetNum.reduce((acc, cur) => acc + cur, 0);
+        result = Math.max(result, Math.abs(sum))
     }
-
-    return Math.abs(numbers[0]);
-}
-
-function getOrder(arr){
-    const newArr = [...new Set(arr)];
-    return getCombination(newArr, newArr.length);
-}
-
-function getCombination(arr, selectNum){
-    const result = [];
-    if (selectNum === 1) return arr.map((el) => [el]);
-    
-    arr.forEach((fixed, index, origin) => {
-        const rest = [...origin.slice(0, index), ...origin.slice(index+1)];
-        const combination = getCombination(rest, selectNum-1);
-        const attached = combination.map((el) => [fixed, ...el]);
-        result.push(...attached);
-    });
     
     return result;
 }
