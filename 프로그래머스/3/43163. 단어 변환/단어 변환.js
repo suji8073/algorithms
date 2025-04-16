@@ -1,41 +1,47 @@
 function solution(begin, target, words) {
-    const wordKey = new Set(words);
-    if (!wordKey.has(target)) return 0;
+    if (!words.includes(target)) return 0;
     
-    let min = null;
-    dfs(begin, 0, wordKey);
+    let result = 0;
+    bfs();
     
-    return min ?? 0;
+    return result;
     
-    function dfs(start, count, key) {
-        if (start === target) {
-            min = !min ? count : Math.min(min, count);
-            return;
-        }
+    function bfs() {
+        const queue = [[begin, 0]];
+        const visited = Array(words.length).fill(false);
         
-        for (const word of words) {
-            if (!key.has(word)) continue;
+        while (queue.length > 0){
+            const [next, count] = queue.shift();
             
-            const length = checkStr(start, word);
-            if (length !== 1) continue;
+            if (target === next){
+                result = count;
+                return;
+            }
             
-            const newKey = new Set(key);
-            newKey.delete(word);
-            dfs(word, count + 1, newKey)
+            for (let i = 0; i < words.length; i++){
+                if (!visited[i] && checkStr(next, words[i])){
+                    visited[i] = true;
+                    queue.push([words[i], count+1]);
+                    visited[i] = false;
+                }
+            }
         }
+
     }
 }
 
-function checkStr(str1, str2) {
-    let arr = [...str2];
+
+
+
+function checkStr(str1, str2){
+    let count = 0;
+    const target = [...str2];
     
-    for (const char of [...str1]) {
-        for (let i = 0; i < arr.length; i++) {
-            if (char !== arr[i]) continue;
-            arr[i] = false;
-            break;
+    for (let i = 0; i < str1.length; i++) {
+        if (str1[i] !== str2[i]) {
+            count++;
         }
+        if (count > 1) return false;
     }
-    
-   return arr.filter((c) => c).length;
+    return true;
 }
