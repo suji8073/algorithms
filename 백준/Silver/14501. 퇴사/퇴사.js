@@ -1,47 +1,22 @@
 const fs = require('fs');
-const [n, ...input] = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
+const input = fs.readFileSync('/dev/stdin', 'utf-8').trim().split('\n');
 
-const N = Number(n);
-const arr = input.map((row) => row.split(' ').map(Number));
+const N = Number(input[0]);
+const arr = input.slice(1).map((row) => row.split(' ').map(Number));
 
 let max = 0;
-backtrack(0, 0);
+dfs(0, 0);
 console.log(max);
 
-function backtrack(start, sum) {
-  if (start >= N) {
-    max = Math.max(max, sum);
+function dfs(index, sum) {
+  max = Math.max(sum, max);
+  if (index === N) {
     return;
   }
 
-  const [t, p] = arr[start];
-
-  if (start + t <= N) {
-    backtrack(start + t, sum + p);
+  if (index + arr[index][0] <= N) {
+    dfs(index + arr[index][0], sum + arr[index][1]);
   }
-  backtrack(start + 1, sum);
+
+  dfs(index + 1, sum);
 }
-
-// let max = 0;
-// const paths = [];
-// backtrack(0, []);
-
-// console.log(max);
-// function backtrack(start) {
-//   if (start >= N) {
-//     const sum = paths.reduce((acc, cur) => acc + cur, 0);
-//     max = Math.max(max, sum);
-//     return;
-//   }
-
-//   for (let i = start; i < N; i++) {
-//     if (arr[i][0] + i <= N) {
-//       paths.push(arr[i][1]);
-//       backtrack(arr[i][0] + i);
-//       paths.pop(); // 백트래킹 핵심!
-//     } else {
-//       const sum = paths.reduce((acc, cur) => acc + cur, 0);
-//       max = Math.max(max, sum);
-//     }
-//   }
-// }
