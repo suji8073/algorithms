@@ -1,16 +1,16 @@
 function solution(number, k) {
     const stack = [];
-    let removed = 0;
+    let count = 0;
     
-    for (const num of number){
-        while (stack.at(-1) < num && removed < k && stack.length !== 0){
-             stack.pop();
-             removed++;
+    for (const num of [...number]) {
+        while (stack.length !== 0 && stack[stack.length - 1] < Number(num) && count < k){
+            stack.pop();
+            count++;
         }
-        stack.push(num);
+        stack.push(Number(num));
     }
     
-    return stack.slice(0, number.length - k).join('');
+    return stack.slice(0, number.length - k).join('')
 }
 
 
