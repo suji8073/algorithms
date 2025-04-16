@@ -1,25 +1,24 @@
 function solution(dirs) {
-    const vector = { L : [-1, 0], R : [1, 0], U : [0, 1], D : [0, -1]};
     let current = [0, 0];
+    const route = new Set();
     
-    const router = new Set();
-    
-    for (const dir of dirs) {
-        const next = [
-            current[0] + vector[dir][0],
-            current[1] + vector[dir][1]
-        ];
+    for (const dir of [...dirs]) {
+        const next = [...current];
         
-        if (next[0] < -5 || next[1] < -5 || next[0] > 5 || next[1] > 5) continue;
-        
-        const currentPath = `${current.join(',')}-${next.join(',')}`;
-        const newPath = `${next.join(',')}-${current.join(',')}`;
-        
-        if (!router.has(currentPath) && !router.has(newPath)){
-            router.add(currentPath);
-            router.add(newPath);
+        if (dir === 'U') next[1]++
+        else if (dir === 'L') next[0]--;
+        else if (dir === 'R') next[0]++;
+        else next[1]--;
+
+        if (next[0] >= -5 && next[0] <= 5 && next[1] >= -5 && next[1] <= 5) {
+            const k1 = `${current.join(',')}-${next.join(',')}`;
+            const k2 = `${next.join(',')}-${current.join(',')}`;
+            
+            route.add(k1);
+            route.add(k2);
+            current = next;
         }
-        current = next;
     }
-    return router.size / 2;
+    
+    return route.size / 2;
 }
