@@ -1,25 +1,18 @@
 function solution(people, limit) {
-    people.sort((a, b) => a - b);
+    let count = 0;
+    people.sort((a, b) => b - a);
     
     let left = 0;
     let right = people.length - 1;
-    let count = 0;
-    while (left <= right) {
-        if (left === right){
-            count++;
-            break;
+    
+    while(left <= right) {
+        if (people[left] + people[right] <= limit){
+            right--;
         }
-        const min = people[left];
-        const max = people[right];
         
-        if (max + min > limit){
-            right--;
-        } else {
-            right--;
-            left++;
-        }
+        left++;
         count++;
     }
-
+    
     return count;
 }
