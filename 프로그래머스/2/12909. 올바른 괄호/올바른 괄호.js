@@ -1,11 +1,13 @@
 function solution(s) {
-    var count = 0;
-    for (let i = 0; i < s.length; i++) {
-        count += (s[i] === '(' ? 1 : -1);
-        
-        if (count < 0) {
-            return false;
-        }
+    const stack = [];
+    
+    for (const char of s) {
+        if (char === ')' && stack[stack.length -1] === '('){
+            stack.pop();
+            continue;
+        } 
+        stack.push(char);
     }
-    return count === 0;
+    
+    return stack.length === 0;
 }
