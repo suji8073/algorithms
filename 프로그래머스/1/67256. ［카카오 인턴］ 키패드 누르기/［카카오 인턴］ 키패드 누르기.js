@@ -1,57 +1,65 @@
-function findIndex(num){
-    const keypads = [[1,4,7,'*'], [2,5,8,0], [3,6,9,'#']];
+function calcLocation(char){
+    if (char === 0) return [1,3];
+    if (char === '*') return [0, 3];
+    if (char === '#') return [2, 3];
+
+    return [(char -1) % 3, Math.floor((char - 1) / 3)];
+}
+
+function calcDistance(target, left, right){
+    const [t1, t2] = calcLocation(target);
+    const [x1, y1] = calcLocation(left);
+    const [x2, y2] = calcLocation(right);
     
-    for (let row = 0; row < keypads.length; row++) {
-        for (let col = 0; col < keypads[0].length; col++){
-            if (num === keypads[row][col]){
-                return [row, col];
-            }
-        }
-    }
-    return null;
+    const dist1 = Math.abs(x1 - t1) + Math.abs(y1 - t2);
+    const dist2 = Math.abs(x2 - t1) + Math.abs(y2 - t2);
+    
+    if (dist1 === dist2) return 'same';
+    return dist1 < dist2 ? 'left' : 'right'
 }
-
-function calcIndex(arr, target){
-    return Math.abs(arr[0] - target[0]) + Math.abs(arr[1] - target[1]);
-}
-
 
 function solution(numbers, hand) {
-    var result = '';
-    let left = [0, 3];
-    let right = [2, 3];
+    const result = [];
+    let left = '*'
+    let right = '#'
     
-    for (const num of numbers) {
-        const index = findIndex(num);
-        
-        if (![2, 5, 8, 0].includes(num)) {
-            const isLeft = [1, 4, 7].includes(num);
-            
-            if (isLeft) left = index;
-            else right = index;
-            
-            result += isLeft ? 'L' : 'R'
+    for (const num of numbers) { 
+        if (num === 1 || num === 4 || num === 7){
+            result.push('L');
+            left = num;
+            continue;
+        }
+        if (num === 3 || num === 6 || num === 9){
+            result.push('R');
+            right = num;
             continue;
         }
         
-        const calcLeft = calcIndex(index, left);
-        const calcRight = calcIndex(index, right);
-        
-        if (calcLeft === calcRight) {
-            const isHandLeft = hand === 'left';
-            
-            if (isHandLeft) left = index;
-            else right = index;
-
-            result += isHandLeft ? 'L' : 'R'
+        const check = calcDistance(num, left, right);
+        if (check === 'left'){
+            result.push('L');
+            left = num;
             continue;
         }
         
-        if (calcLeft < calcRight) left = index;
-        else right = index;
-
-        result += calcLeft < calcRight ? 'L' : 'R'
+         if (check === 'right'){
+            result.push('R');
+            right = num;
+            continue;
+        }
+        
+         if (hand === 'left'){
+            result.push('L');
+            left = num;
+            continue;
+        }
+        
+         if (hand === 'right'){
+            result.push('R');
+            right = num;
+            continue;
+        }
     }
     
-    return result;
+    return result.join('')
 }
