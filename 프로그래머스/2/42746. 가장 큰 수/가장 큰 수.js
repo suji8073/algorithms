@@ -1,10 +1,9 @@
 function solution(numbers) {
-    numbers.sort((a, b) => {
-        const strA = a + "";
-        const strB = b + "";
-        
-        return Number(strA + strB) > Number(strB + strA) ? -1 : 1;
+    const result = numbers.sort((a, b) => {
+        const strA = a + '' + b;
+        const strB = b + '' + a;
+        return strA > strB ? -1 : 1
     });
     
-    return numbers[0] === 0 ? '0' : numbers.join('');
+    return result[0] === 0 ? '0' : result.join('');
 }
