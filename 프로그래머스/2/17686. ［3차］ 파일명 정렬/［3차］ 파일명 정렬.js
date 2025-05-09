@@ -25,5 +25,5 @@ function getSplitText(str){
         }
     }
     
-    return [[...str.slice(0, index)].map(s => s.toLowerCase()).join(''), Number(str.slice(index, lastIndex))];
+    return [str.slice(0, index).toLowerCase(), Number(str.slice(index, lastIndex))];
 }
