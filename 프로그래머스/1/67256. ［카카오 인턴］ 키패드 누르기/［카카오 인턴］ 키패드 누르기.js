@@ -36,25 +36,13 @@ function solution(numbers, hand) {
         }
         
         const check = calcDistance(num, left, right);
-        if (check === 'left'){
+        if (check === 'left' || (check === 'same' && hand === 'left')){
             result.push('L');
             left = num;
             continue;
         }
         
-         if (check === 'right'){
-            result.push('R');
-            right = num;
-            continue;
-        }
-        
-         if (hand === 'left'){
-            result.push('L');
-            left = num;
-            continue;
-        }
-        
-         if (hand === 'right'){
+         if (check === 'right'|| (check === 'same' && hand === 'right')){
             result.push('R');
             right = num;
             continue;
