@@ -23,19 +23,13 @@ function solution(str1, str2) {
     
     let sum = 0;
     let value = 0;
-    const keys = [...new Set([...map1.keys(), ...map2.keys()])];
+    const keys = new Set([...map1.keys(), ...map2.keys()]);
     
     for (const key of keys){
-        if (map1.has(key) && map2.has(key)){
-            const v1 = map1.get(key);
-            const v2 = map2.get(key);
-            sum += Math.max(v1, v2);
-            value += Math.min(v1, v2);
-        } else if (map1.has(key)) {
-            sum += map1.get(key);
-        } else {
-            sum += map2.get(key);
-        }
+        const v1 = map1.get(key) || 0;
+        const v2 = map2.get(key) || 0;
+        sum += Math.max(v1, v2);
+        value += Math.min(v1, v2);
     }
   
     return Math.floor(value / sum * 65536);
