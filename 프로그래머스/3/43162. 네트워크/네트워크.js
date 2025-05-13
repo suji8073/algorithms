@@ -1,35 +1,28 @@
 function solution(n, computers) {
-    const len = computers.length;
     const map = new Map();
-    
-    for (let i = 0; i < len; i++) {
-        for (let j = 0; j < len; j++) {
-            if (i !== j && computers[i][j] === 1) {
-                map.set(i+1, map.has(i+1) ? [j+1, ...map.get(i+1)] : [j+1]);
+    for (let i = 0; i < n; i++){
+        for (let j = 0; j < n; j++){
+            if (i !== j && computers[i][j] === 1){
+                map.set(i, map.has(i) ? [...map.get(i), j] : [j]);
             }
         }
     }
     
-    const visited = Array(n+1).fill(false);
-    let count = 0;
-    for (let i = 1; i <= n; i++){
+    const visited = Array(n).fill(false);
+    let result = 0;
+    for (let i = 0; i < n; i++){
         if (!visited[i]){
-            visited[i] = true;
-            count++;
+            result++;
             dfs(i);
         }
     }
     
-    return count;
+    return result;
     
-    function dfs(start){
-        for (const value of map.get(start) ?? []){
-            if (!visited[value]) {
-                visited[value] = true;
-                dfs(value);
-            }
+    function dfs(node){
+        visited[node] = true;
+        for (const value of map.get(node) ?? []){
+            if (!visited[value]) dfs(value);
         }
     }
-    
-   
 }
