@@ -1,58 +1,60 @@
 const fs = require('fs');
-let inputFile = fs.readFileSync('/dev/stdin', 'utf8').trim().split('\n');
-
-const [n, m] = inputFile[0].split(' ').map(Number);
-const input = inputFile.slice(1).map((row) => row.split(' ').map(Number));
+const input = fs.readFileSync(0, 'utf-8').trim().split('\n');
 
 const vectors = [
-  [-1, 0],
-  [1, 0],
   [0, -1],
   [0, 1],
+  [-1, 0],
+  [1, 0],
 ];
 
-const countArr = [];
-let zeroCount = 0;
-for (let i = 0; i < m; i++) {
-  for (let j = 0; j < n; j++) {
-    const num = input[i][j];
-    if (num === 1) {
-      countArr.push([i, j, 1]);
-    } else if (num === 0) {
-      zeroCount++;
+const [M, N] = input[0].split(' ').map(Number);
+const array = input.slice(1).map((row) => row.split(' ').map(Number));
+
+const visited = [];
+const queue = [];
+
+let sum = 0;
+
+for (let i = 0; i < N; i++) {
+  const row = [];
+  for (let j = 0; j < M; j++) {
+    if (array[i][j] === 0) {
+      sum++;
+      row.push(false);
+      continue;
     }
+
+    row.push(true);
+    if (array[i][j] === 1) queue.push([i, j, 0]);
   }
+  visited.push(row);
 }
 
-if (zeroCount === 0) {
-  console.log(0);
-  return;
-}
+let result = -1;
 
-console.log(bfs(countArr));
+bfs();
 
-function bfs(queue) {
+console.log(result);
+
+function bfs() {
   let index = 0;
-   
-
   while (index < queue.length) {
-    const [x, y, count] = queue[index];
-    index++;
+    const [x, y, count] = queue[index++];
 
-    for (const vector of vectors) {
-      const nx = x + vector[0];
-      const ny = y + vector[1];
+    if (sum === 0) {
+      result = Math.max(result, count);
+    }
 
-      if (nx >= 0 && nx < m && ny >= 0 && ny < n && input[nx][ny] === 0) {
-        input[nx][ny] = 1;
+    for (const [dx, dy] of vectors) {
+      const nx = x + dx;
+      const ny = y + dy;
+
+      if (nx >= 0 && nx < N && ny >= 0 && ny < M && !visited[nx][ny]) {
+        visited[nx][ny] = true;
+        sum--;
         queue.push([nx, ny, count + 1]);
-        zeroCount--;
-
-        if (zeroCount === 0) {
-          return count;
-        }
       }
     }
   }
-  return -1;
 }
