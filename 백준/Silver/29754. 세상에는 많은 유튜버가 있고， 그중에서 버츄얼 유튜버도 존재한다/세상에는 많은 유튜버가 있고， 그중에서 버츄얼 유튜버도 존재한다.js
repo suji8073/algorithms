@@ -11,34 +11,29 @@ for (const [name, day, time1, time2] of arr){
     const week = Math.floor((day - 1) / 7);
 
     if (!map.has(name)){
-        const visited = Array.from({length: M / 7}, () => ({day: [], totalTime: 0}));
-        visited[week].day.push(day);
+        const visited = Array.from({length: M / 7}, () => ({dayArr: [], totalTime: 0}));
+        visited[week].dayArr.push(day);
         visited[week].totalTime += time;
         map.set(name, visited);
         continue;
     }
 
     const value = map.get(name);
-    value[week].day.push(day);
+    value[week].dayArr.push(day);
     value[week].totalTime += time;
 }
 
 const result = [];
 for (const [key, value] of map){
-    let checkYouTube = true;
+    let check = true;
     for (let i = 0; i < value.length; i++){
-        const {day, totalTime} = value[i];
-
-        if (day.length < 5 || totalTime < 3600){
-            checkYouTube = false;
+        const {dayArr, totalTime} = value[i];
+        if (dayArr.length < 5 || totalTime < 3600){
+            check = false;
             break;
         }
     }
-
-    if (checkYouTube){
-        result.push(key)
-    }
-   
+    if (check) result.push(key);
 }
 
 console.log(result.length === 0 ? -1 : result.sort().join('\n'))
