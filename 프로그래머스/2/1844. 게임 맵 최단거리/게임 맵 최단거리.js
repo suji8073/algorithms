@@ -1,32 +1,33 @@
 function solution(maps) {
-    const n = maps.length;
-    const m = maps[0].length;
+    const vectors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+    const visited = maps.map(row => row.map(item => item === 0));
     
-    const vactor = [
-        [-1, 0],
-        [1, 0],
-        [0, -1],
-        [0, 1]
-    ];
+    const N = maps.length;
+    const M = maps[0].length;
     
-    const queue = [[0, 0, 1]];
-    while (queue.length > 0){
-        const [x, y, count] = queue.shift();
+    return bfs();
+    
+    function bfs() {
+        const queue = [[0, 0, 1]];
+        visited[0][0] = true;
         
-        if (x === n - 1 && y === m - 1){
-            return count;
-        }
-        
-        for (const vact of vactor){
-            const nx = x + vact[0];
-            const ny = y + vact[1];
+        while(queue.length > 0) {
+            const [x, y, count] = queue.shift();
             
-            if (nx >= 0 && nx < n && ny >= 0 && ny < m && maps[nx][ny] === 1){
-                maps[nx][ny] = 0;
-                queue.push([nx, ny, count+1])
+            if (x === N - 1 && y === M - 1) {
+                return count;
+            }
+            
+            for (const vector of vectors) {
+                const nx = x + vector[0];
+                const ny = y + vector[1];
+                
+                if (nx >= 0 && nx < N && ny >= 0 && ny < M && !visited[nx][ny]){
+                    visited[nx][ny] = true;
+                    queue.push([nx, ny, count+1]);
+                }
             }
         }
+        return -1;
     }
-    
-    return -1;
 }
