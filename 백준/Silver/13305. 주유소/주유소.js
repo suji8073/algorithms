@@ -7,19 +7,19 @@ const cost = input[2]
   .split(' ')
   .map(Number)
   .slice(0, N - 1);
-const minCost = Math.min(...cost);
 
 let result = 0;
 
-for (let i = 0; i < N; i++) {
-  if (cost[i] !== minCost) {
-    result += dist[i] * cost[i];
-    continue;
+for (let i = 0; i < N - 1; i++) {
+  const targetCost = cost[i];
+  let totalDist = dist[i];
+
+  while (i + 1 < N - 1 && cost[i + 1] > targetCost) {
+    totalDist += dist[i + 1];
+    i++;
   }
 
-  const totalDist = dist.slice(i).reduce((acc, cur) => acc + cur, 0);
-  result += totalDist * cost[i];
-  break;
+  result += totalDist * targetCost;
 }
 
 console.log(result);
